@@ -19,6 +19,7 @@ const controller = {
 
     login: async (request: Request, response: Response, next: NextFunction) => {
         try {
+            console.log(request.body);
             return response.status(StatusCodes.OK).send({status: 'success'})
         } catch (error) {
             next(error)
@@ -27,6 +28,7 @@ const controller = {
 
     signin: async (request: Request, response: Response, next: NextFunction) => {
         try {
+            console.log(request.body);
             return response.status(StatusCodes.OK).send({status: 'success'})
         } catch (error) {
             next(error)

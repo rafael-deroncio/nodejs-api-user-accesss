@@ -1,5 +1,5 @@
 import { ValidationResult } from "joi";
-import IRequestValidator from "./contracts/interfaces/irequest-validator";
+import IRequestValidator from "./interfaces/irequest-validator";
 import IRequestContract from "./contracts/interfaces/irequest-contract";
 
 class RequestValidator<T extends IRequestContract> implements IRequestValidator {

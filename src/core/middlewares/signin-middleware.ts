@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import RequestValidator from "../validators/request-validator";
 import SigninContract from "../validators/contracts/signin-contract";
-import IRequestValidator from "../validators/contracts/interfaces/irequest-validator";
+import IRequestValidator from "../validators/interfaces/irequest-validator";
 import { StatusCodes } from "http-status-codes";
 import IMapper from "../configurations/interfaces/imapper";
 import Mapper from "../configurations/mapper";
