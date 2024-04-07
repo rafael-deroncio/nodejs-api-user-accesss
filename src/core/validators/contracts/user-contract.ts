@@ -1,8 +1,9 @@
 import Joi from "joi";
+import IRequestContract from "./interfaces/irequest-contract";
 
-class UserContract {
+class UserContract implements IRequestContract {
 
-    static schema = Joi.object({
+    private static schema = Joi.object({
         firstName: Joi.string().min(2).max(50).required().messages({
             'string.min': 'First name must be at least {#limit} characters long.',
             'string.max': 'First name must be at most {#limit} characters long.',
@@ -40,6 +41,10 @@ class UserContract {
                 'string.pattern.base': 'Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.'
             }),
     });
+
+    getSchema() {
+        return UserContract.schema
+    }
 }
 
 export default UserContract;

@@ -1,7 +1,7 @@
-import { ValidationResult } from "joi";
-
 interface IRequestValidator {
-    validate(data: object): ValidationResult;
+    validate(): void;
+    errors: string[];
+    isValid: boolean;
 }
 
 export default IRequestValidator;

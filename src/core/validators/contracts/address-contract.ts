@@ -1,6 +1,7 @@
 import Joi from "joi";
+import IRequestContract from "./interfaces/irequest-contract";
 
-class AddressContract {
+class AddressContract implements IRequestContract {
 
     static schema = Joi.object({
         street: Joi.string().min(2).max(100).required().messages({
@@ -44,6 +45,10 @@ class AddressContract {
             'any.required': 'Principal flag is required.'
         })
     }).options({ abortEarly: false });
+
+    getSchema() {
+        return AddressContract.schema
+    }
 }
 
 export default AddressContract;

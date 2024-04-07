@@ -1,8 +1,9 @@
 import Joi from "joi";
+import IRequestContract from "./interfaces/irequest-contract";
 
-class TelephoneContract {
+class TelephoneContract implements IRequestContract {
 
-    static schema = Joi.object({
+    private static schema = Joi.object({
         number: Joi.string().required().messages({
             'any.required': 'Phone number is required.'
         }),
@@ -14,6 +15,10 @@ class TelephoneContract {
             'any.required': 'Principal flag is required.'
         })
     }).options({ abortEarly: false });
+
+    getSchema() {
+        return TelephoneContract.schema
+    }
 }
 
 export default TelephoneContract;

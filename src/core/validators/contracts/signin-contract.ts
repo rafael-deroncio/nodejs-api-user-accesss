@@ -2,17 +2,22 @@ import Joi from "joi";
 import AddressContract from "./address-contract";
 import TelephoneContract from "./telephone-contratct";
 import UserContract from "./user-contract";
+import IRequestContract from "./interfaces/irequest-contract";
 
-class SigninContract {
+class SigninContract implements IRequestContract {
 
-    private userSchema = UserContract.schema;
-    private addressSchema = AddressContract.schema;
-    private telephoneSchema = TelephoneContract.schema;
+    private static userSchema = new UserContract().getSchema();
+    private static addressSchema = new AddressContract().getSchema();
+    private static telephoneSchema = new TelephoneContract().getSchema();
 
-    private _schema = this.userSchema.keys({
-        addresses: Joi.array().items(this.addressSchema).required(),
-        telephones: Joi.array().items(this.telephoneSchema).required()
+    private schema = SigninContract.userSchema.keys({
+        addresses: Joi.array().items(SigninContract.addressSchema).required(),
+        telephones: Joi.array().items(SigninContract.telephoneSchema).required()
     }).options({ abortEarly: false });
+
+    getSchema() {
+        return this.schema
+    }
 }
 
 export default SigninContract;
