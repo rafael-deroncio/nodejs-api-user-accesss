@@ -3,13 +3,14 @@ import http from 'http';
 import config from './config';
 import routes from "./api/routes/routes";
 import morgan from "morgan";
+import exception from "./core/handlers/global-error-handler";
 
 const app = express();
 
 app.use(express.json());
 app.use(morgan(config.app.morgan.format));
 app.use(routes);
-
+app.use(exception.handler);
 
 app.set('host', config.server.host);
 app.set('port', config.server.port);
