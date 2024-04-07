@@ -4,8 +4,11 @@ import config from './config';
 import routes from "./api/routes/routes";
 import morgan from "morgan";
 import exception from "./core/handlers/global-error-handler";
+import TypeOrm from "./core/configurations/typeorm";
 
 const app = express();
+
+TypeOrm.instance().initialize();
 
 app.use(express.json());
 app.use(morgan(config.app.morgan.format));

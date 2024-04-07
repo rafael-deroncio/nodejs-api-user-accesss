@@ -11,6 +11,9 @@ const PORT: string = parameters.environment().APP_PORT ?? '3000';
 const ENV: string = parameters.environment().APP_ENV ?? 'dev';
 const LOG_PATH: string = parameters.environment().LOG_PATH ?? './logs'
 
+const TYPEORM_TYPE: string = parameters.environment().TYPEORM_TYPE ?? 'sqlite'
+const TYPEORM_DATABASE: string = parameters.environment().TYPEORM_DATABASE ?? './database.sqlite'
+
 const config = {
     server: {
         host: HOST,
@@ -78,12 +81,27 @@ const config = {
             format: ENV === 'dev' ? 'dev' : 'common',
             stream: () => {
                 const date: Date = new Date();
-                const file: string = `LOG_${ENV}_${date.getFullYear()}${date.getMonth()+1}${date.getDate()}.log`;
+                const file: string = `LOG_${ENV}_${date.getFullYear()}${date.getMonth() + 1}${date.getDate()}.log`;
                 const dir: string = path.join(LOG_PATH, file);
                 fs.createWriteStream(dir, { flags: 'a' });
             }
         }
     },
+
+    database: {
+        options: {
+            type: TYPEORM_TYPE,
+            database: TYPEORM_DATABASE,
+            synchronize: ENV === 'dev' ? true : false,
+            entities: [path.join(__dirname, './core/configurations/entities/*.ts')],
+            migrations: [path.join(__dirname, './core/configurations/migrations/*.ts')],
+            cli: {
+                entitiesDir: path.join(__dirname, './core/configurations/entities'),
+                migrationsDir: path.join(__dirname, './core/configurations/migrations')
+            },
+        }
+    }
+
 }
 
 export default config;
