@@ -7,7 +7,7 @@ class SiginRequest {
     firstName!: string;
 
     @Expose()
-    lasttName!: string;
+    lastName!: string;
 
     @Expose()
     birthDate!: Date;
