@@ -6,7 +6,7 @@ import Options from '../../core/configurations/options';
 const _options: IOptions = Options.instance();
 
 const controller = {
-    get: (request: Request, response: Response, next: NextFunction) => {
+    index: (request: Request, response: Response, next: NextFunction) => {
         response.status(StatusCodes.OK)
             .send({
                 route: request.route.path,
@@ -15,6 +15,22 @@ const controller = {
             });
 
         next();
+    },
+
+    login: async (request: Request, response: Response, next: NextFunction) => {
+        try {
+            return response.status(StatusCodes.OK).send({status: 'success'})
+        } catch (error) {
+            next(error)
+        }
+    },
+
+    signin: async (request: Request, response: Response, next: NextFunction) => {
+        try {
+            return response.status(StatusCodes.OK).send({status: 'success'})
+        } catch (error) {
+            next(error)
+        }
     }
 };
 
