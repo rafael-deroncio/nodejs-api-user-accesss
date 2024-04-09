@@ -1,10 +1,11 @@
+import UserEntity from "../../configurations/entities/user-entity";
+
 interface IUserRepository {
-    getuser(): Promise<void>;
-    getUsers(): Promise<void>
-    createUser(): Promise<void>
-    updateUser(): Promise<void>
-    deleteUser(): Promise<void>
+    getuser(): Promise<UserEntity | null>;
+    getUsers(): Promise<UserEntity[] | null>
+    createUser(): Promise<UserEntity | null>
+    updateUser(): Promise<UserEntity | null>
+    deleteUser(): Promise<boolean>
 }
 
 export default IUserRepository;
- 

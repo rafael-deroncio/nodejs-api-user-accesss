@@ -1,13 +1,16 @@
-interface IBaseConnection {
+import { ObjectLiteral, Repository } from "typeorm";
 
-    connect(): Promise<void>;
+interface IBaseConnection<T extends ObjectLiteral> {
 
-    start(): Promise<void>;
+  repository(): Repository<T>;
 
-    commit(): Promise<void>;
+  start(): Promise<void>;
 
-    rollback(): Promise<void>;
-  }
-  
-  export default IBaseConnection;
-  
+  commit(): Promise<void>;
+
+  rollback(): Promise<void>;
+
+  release(): Promise<void>;
+}
+
+export default IBaseConnection;
