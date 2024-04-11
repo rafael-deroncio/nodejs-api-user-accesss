@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import RoleEtity from "./role-entity";
 import AddressEntity from "./address-entity";
 import TelephoneEntity from "./telephone-entity";
@@ -10,7 +10,7 @@ import { Expose } from "class-transformer";
 class UserEntity {
 
     @Expose()
-    @PrimaryColumn()
+    @PrimaryGeneratedColumn('increment')
     id!: number;
 
     @Expose()
@@ -26,37 +26,39 @@ class UserEntity {
     sex!: string;
 
     @Expose()
-    @Column()
+    @Column({default: false})
     active!: boolean;
-
+    
     @Expose()
     @Column()
+    @CreateDateColumn()
     created!: Date;
 
     @Expose()
     @Column()
+    @UpdateDateColumn()
     updated!: Date;
 
     @Expose()
-    @ManyToOne(() => RoleEtity, role => role.users)
+    @ManyToOne(() => RoleEtity, role => role.users, { eager: true, cascade: true })
     @JoinColumn({ name: 'role_id' })
     role!: RoleEtity;
 
     @Expose()
-    @ManyToOne(() => CredentialEntity, credential => credential.users)
+    @ManyToOne(() => CredentialEntity, credential => credential.users, { eager: true, cascade: true })
     @JoinColumn({ name: 'credential_id' })
     credential!: CredentialEntity;
 
     @Expose()
-    @OneToMany(() => AddressEntity, address => address.user)
+    @OneToMany(() => AddressEntity, address => address.user, { eager: true, cascade: true })
     addresses!: AddressEntity[];
 
     @Expose()
-    @OneToMany(() => TelephoneEntity, address => address.user)
+    @OneToMany(() => TelephoneEntity, address => address.user, { eager: true, cascade: true })
     telephones!: TelephoneEntity[];
 
     @Expose()
-    @OneToMany(() => AccessEntity, access => access.user)
+    @OneToMany(() => AccessEntity, access => access.user, { eager: true, cascade: true })
     accesses!: AccessEntity[];
 }
 

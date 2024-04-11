@@ -1,21 +1,29 @@
-import { Column, Entity, OneToMany, PrimaryColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import UserEntity from "./user-entity";
+import { Expose } from "class-transformer";
 
 @Entity({ name: 'user_roles' })
 class RoleEtity {
-    @PrimaryColumn()
+    @Expose()
+    @PrimaryGeneratedColumn('increment')
     id!: number;
 
+    @Expose()
     @Column()
     role!: string;
 
-    @Column()
+    @Expose()
+    @Column({default: true})
     active!: boolean;
 
+    @Expose()
     @Column()
+    @CreateDateColumn()
     created!: Date;
 
+    @Expose()
     @Column()
+    @UpdateDateColumn()
     updated!: Date;
 
     @OneToMany(() => UserEntity, user => user.role)

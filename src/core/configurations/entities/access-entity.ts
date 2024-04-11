@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import UserEntity from "./user-entity";
 import { Expose } from "class-transformer";
 
@@ -6,7 +6,7 @@ import { Expose } from "class-transformer";
 class AccessEntity {
     
     @Expose()
-    @PrimaryColumn()
+    @PrimaryGeneratedColumn('increment')
     id!: number;
 
     @Expose()
@@ -22,19 +22,22 @@ class AccessEntity {
     password!: string;
 
     @Expose()
-    @Column()
+    @Column({default: false})
     active!: boolean;
 
     @Expose()
     @Column()
+    @CreateDateColumn()
     created!: Date;
 
     @Expose()
     @Column()
+    @UpdateDateColumn()
     updated!: Date;
 
     @Expose()
-    @OneToMany(() => UserEntity, user => user.accesses)
+    @ManyToOne(() => UserEntity, user => user.accesses)
+    @JoinColumn({ name: 'user_id' })
     user!: UserEntity;
 }
 
