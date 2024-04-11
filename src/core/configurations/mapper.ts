@@ -11,7 +11,8 @@ class Mapper implements IMapper {
         return this._instance
     }
 
-    map<T>(source: object, target: new () => T): T {
+    map<T>(source: object | null, target: new () => T): T {
+        if (!source) null as T
         return plainToClass(target, source, { excludeExtraneousValues: true }) as T;
     }
 }
