@@ -1,93 +1,87 @@
-import { DataSource, DataSourceOptions, EntityTarget, ObjectLiteral, QueryRunner, Repository } from "typeorm";
+import { EntityTarget, ObjectLiteral, QueryRunner, Repository } from "typeorm";
+import { typeorm } from "../configurations/typeorm";
 import IBaseConnection from "./interfaces/ibase-repository";
 import DatabaseException from "../exceptions/database-exception";
+import BaseException from "../exceptions/base-exception";
+
 
 class BaseRepository<T extends ObjectLiteral> implements IBaseConnection<T> {
 
-    private _options;
-    private _connection!: DataSource;
-    private _queryRunner!: QueryRunner;
     private _entity!: EntityTarget<T>;
-    private _repository!: Repository<T>;
+    private _connection: Repository<T>;
+    private _runner: QueryRunner | null;
 
-    constructor(options: object, entity: EntityTarget<T>) {
-        this._options = options as DataSourceOptions;
+    constructor(entity: EntityTarget<T>) {
         this._entity = entity;
-        this.connect();
+        this._connection = typeorm.getRepository(this._entity)
+        this._runner = null;
     }
-
-    private connect(): void {
-        try {
-            if (!this._connection)
-                this._connection = new DataSource(this._options);
-            this._repository = this._connection.getRepository<T>(this._entity)
-            console.log("Connected to the database successfully");
-        } catch (error) {
-            console.error("Error connecting to the database:", error);
-            throw new DatabaseException();
-        }
+    getSequence(): Promise<number | null> {
+        return Promise.resolve(null);
     }
-
-    repository(): Repository<T> {
-        return this._repository;
-    }
-
 
     async start(): Promise<void> {
         try {
-            if (!this._connection) {
-                console.error("Connection not initialized");
-                throw new DatabaseException();
-            }
+            console.log('Transaction started');
+            if (!this._runner)
+                this._runner = typeorm.createQueryRunner();
 
-            this._queryRunner = this._connection.createQueryRunner();
-            await this._queryRunner.startTransaction();
+            this._runner?.startTransaction();
 
-        } catch (error) {
-            console.error("Unable to start transaction:", error);
-            throw error
+        } catch (e) {
+            console.error(`Transaction error: ${e}`);
+            throw new DatabaseException();
         }
     }
 
     async commit(): Promise<void> {
         try {
-            if (!this._queryRunner) {
-                console.error("Connection not initialized");
+            console.log('Commit started');
+            if (!this._runner) {
+                console.error('Transaction not started.');
                 throw new DatabaseException();
             }
-            await this._queryRunner.commitTransaction();
-            await this._queryRunner.release();
-        } catch (error) {
-            console.error("Unable to start transaction:", error);
-            throw error
+
+            this._runner?.commitTransaction();
+            this._runner?.release();
+            this._runner = null;
+
+        } catch (e) {
+            if (e instanceof BaseException)
+                throw e;
+            else {
+                console.error(`Commit error: ${e}`);
+                throw new DatabaseException();
+            }
+        } finally {
+            console.log('Commit finished');
         }
     }
 
     async rollback(): Promise<void> {
         try {
-            if (!this._queryRunner) {
-                console.error("Connection not initialized");
+            console.log('Rollback started');
+            if (!this._runner) {
+                console.error('Transaction not started.');
+            }
+
+            this._runner?.rollbackTransaction();
+            this._runner?.release();
+            this._runner = null;
+        } catch (e) {
+            if (e instanceof BaseException)
+                throw e;
+            else {
+                console.error(`Rollback error: ${e}`);
                 throw new DatabaseException();
             }
-            await this._queryRunner.commitTransaction();
-            await this._queryRunner.release();
-        } catch (error) {
-            console.error("Unable to start transaction:", error);
-            throw error
+        } finally {
+            console.log('Rollback finished');
         }
     }
 
-    async release(): Promise<void> {
-        try {
-            if (!this._queryRunner) {
-                console.error("Connection not initialized");
-                throw new DatabaseException();
-            }
-            await this._queryRunner.release();
-        } catch (error) {
-            console.error("Unable to start transaction:", error);
-            throw error;
-        }
+    connection(): Repository<T> {
+        return this._connection
     }
 }
 
