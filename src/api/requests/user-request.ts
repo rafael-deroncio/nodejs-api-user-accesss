@@ -1,13 +1,11 @@
-import { Expose } from "class-transformer";
+import { Expose, Transform } from "class-transformer";
 import AddressRequest from "./address-rerquest";
 import TelephoneRequest from "./telephone-request";
 
-class SiginRequest {
+class UserRequest {
     @Expose()
-    firstName!: string;
-
-    @Expose()
-    lastName!: string;
+    @Transform(({ obj }) => `${obj.firstName} ${obj.lastName}`)
+    name!: string;
 
     @Expose()
     birthDate!: Date;
@@ -16,10 +14,10 @@ class SiginRequest {
     sex!: string;
 
     @Expose()
-    picture?: string;
+    email!: string;
 
     @Expose()
-    email!: string;
+    username!: string;
 
     @Expose()
     password!: string;
@@ -31,4 +29,4 @@ class SiginRequest {
     telephones!: TelephoneRequest[];
 }
 
-export default SiginRequest;
+export default UserRequest;

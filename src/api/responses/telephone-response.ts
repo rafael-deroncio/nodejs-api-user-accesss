@@ -1,14 +1,14 @@
 import { Expose } from "class-transformer";
 
-class TelephoneRequest {
+class TelephoneResponse {
     @Expose()
-    number!: string;
-
+    phone!: string;
+    
     @Expose()
     type!: string;
-
+    
     @Expose()
     principal!: boolean;
 }
 
-export default TelephoneRequest;
+export default TelephoneResponse;
