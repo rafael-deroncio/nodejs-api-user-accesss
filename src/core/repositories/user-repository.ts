@@ -1,89 +1,92 @@
-import typeorm from "../configurations/typeorm";
 import BaseRepository from "./base-repository";
 import IUserRepository from "./interfaces/iuser-repository";
 import UserEntity from "../configurations/entities/user-entity";
+import Mapper from "../configurations/mapper";
+import IMapper from "../configurations/interfaces/imapper";
+import UserModel from "../models/user-model";
+import UserArgument from "../arguments/user-argument";
 import DatabaseException from "../exceptions/database-exception";
-import { DeleteResult } from "typeorm";
 
 class UserRepository extends BaseRepository<UserEntity> implements IUserRepository {
 
     private static _instance: IUserRepository;
-
-    private constructor() {
-        super(typeorm.options, UserEntity);
-    }
+    private _mapper: IMapper;
 
     static instance(): IUserRepository {
         if (!this._instance) this._instance = new UserRepository();
         return this._instance
     }
 
-    async getuser(): Promise<UserEntity | null> {
+    private constructor() {
+        super(UserEntity);
+        this._mapper = Mapper.instance();
+    }
+
+    override async getSequence(): Promise<number | null> {
         try {
-            return await this.repository().findOne({});
+            const result = await this.connection()
+                .query(`select seq from sqlite_sequence where name = 'users'`);
+            return result?.[0]?.seq ?? null;
         } catch (error) {
-            console.error(`Error getting user. ${error}`);
-            throw new DatabaseException();
+            console.error("Error getting sequebce:", error);
+            return null;
         }
     }
 
-    async getUsers(): Promise<UserEntity[]> {
+    async getUser(): Promise<UserModel | null> {
+        throw new Error("Method not implemented.");
+    }
+
+    getUsers(): Promise<UserModel[] | null> {
+        throw new Error("Method not implemented.");
+    }
+
+    async getUserByEmail(email: string): Promise<UserModel | null> {
         try {
-            return await this.repository()
-                .createQueryBuilder()
-                .limit(10)
-                .skip(5)
-                .getMany();
+            const user: UserEntity | null = await this.connection()
+                .createQueryBuilder("users")
+                .leftJoinAndSelect("users.role", "role")
+                .leftJoinAndSelect("users.credential", "credential")
+                .leftJoinAndSelect("users.addresses", "addresses")
+                .leftJoinAndSelect("users.telephones", "telephones")
+                .where("credential.email = :email", { email: email })
+                .getOne();
+
+            return this._mapper.map(user, UserModel)
         } catch (error) {
-            console.error(`Error getting users. ${error}`);
-            throw new DatabaseException();
+            console.log(error);
+            throw error
         }
     }
 
-    async createUser(): Promise<UserEntity | null> {
+    async createUser(argument: UserArgument): Promise<UserModel | null> {
         try {
-            this.start();
-            const user: UserEntity = await this.repository().create({})
-            this.commit();
-            return user;
+            await this.start();
+            const user: UserEntity = await this.connection()
+                .save(this._mapper.map(argument, UserEntity));
+            await this.commit();
+
+            if (user) return this._mapper.map(user, UserModel);
+            throw new DatabaseException('Erro ao registrar Usuário.')
         } catch (error) {
-            console.error(`Error create user. ${error}`);
+            console.error(error);
             this.rollback();
-            throw new DatabaseException();
-        } finally {
-            await this.release();
+            if (error instanceof DatabaseException)
+                throw new DatabaseException(error.title);
+            throw error
         }
     }
 
-    async updateUser(): Promise<UserEntity | null> {
-        try {
-            this.start();
-            const user: UserEntity = await this.repository().save({})
-            this.commit();
-            return user;
-        } catch (error) {
-            console.error(`Error update user. ${error}`);
-            this.rollback();
-            throw new DatabaseException();
-        } finally {
-            await this.release();
-        }
+    updateUser(): Promise<UserModel | null> {
+        throw new Error("Method not implemented.");
     }
 
-    async deleteUser(): Promise<boolean> {
-        try {
-            this.start();
-            const result: DeleteResult = await await this.repository().delete({})
-            this.commit();
-            return !!result.affected;
-        } catch (error) {
-            console.error(`Error delete user. ${error}`);
-            this.rollback();
-            throw new DatabaseException();
-        } finally {
-            await this.release();
-        }
+    deleteUser(): Promise<boolean> {
+        throw new Error("Method not implemented.");
     }
+
+
+
 
 }
 

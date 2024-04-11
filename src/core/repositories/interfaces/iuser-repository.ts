@@ -1,11 +1,15 @@
-import UserEntity from "../../configurations/entities/user-entity";
+import UserArgument from "../../arguments/user-argument";
+import UserModel from "../../models/user-model";
 
 interface IUserRepository {
-    getuser(): Promise<UserEntity | null>;
-    getUsers(): Promise<UserEntity[] | null>
-    createUser(): Promise<UserEntity | null>
-    updateUser(): Promise<UserEntity | null>
+    getUser(): Promise<UserModel | null>;
+    getUsers(): Promise<UserModel[] | null>
+    getUserByEmail(email: string): Promise<UserModel | null>;
+    createUser(argument: UserArgument): Promise<UserModel | null>
+    updateUser(): Promise<UserModel | null>
     deleteUser(): Promise<boolean>
+
+    getSequence(): Promise<number | null>
 }
 
 export default IUserRepository;
