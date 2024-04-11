@@ -3,16 +3,29 @@ import Options from "./core/configurations/options";
 import http from 'http';
 import fs from 'fs';
 import path from 'path';
+import md5 from "md5";
 
 const parameters: IOptions = Options.instance();
 
 const HOST: string = parameters.environment().APP_HOST ?? 'localhost';
 const PORT: string = parameters.environment().APP_PORT ?? '3000';
 const ENV: string = parameters.environment().APP_ENV ?? 'dev';
-const LOG_PATH: string = parameters.environment().LOG_PATH ?? './logs'
+const LOG_PATH: string = parameters.environment().LOG_PATH ?? './logs';
 
-const TYPEORM_TYPE: string = parameters.environment().TYPEORM_TYPE ?? 'sqlite'
-const TYPEORM_DATABASE: string = parameters.environment().TYPEORM_DATABASE ?? './database.sqlite'
+const TYPEORM_TYPE: string = parameters.environment().TYPEORM_TYPE ?? 'sqlite';
+const TYPEORM_DATABASE: string = parameters.environment().TYPEORM_DATABASE ?? './database.sqlite';
+const TYPEORM_LOGGING: boolean = Boolean(parameters.environment().TYPEORM_LOGGING) ?? false;
+
+const JWT_SECRET: string = parameters.environment().JWT_SECRET ?? "";
+const JWT_EXPIRES: string = parameters.environment().JWT_EXPIRES ?? "1d";
+
+const MANAGER_EMAIL: string = parameters.environment().MANAGER_EMAIL ?? "manager.api@nodestore.com";
+const MANAGER_USERNAME: string = parameters.environment().MANAGER_USERNAME ?? "manager";
+const MANAGER_PASSWORD: string = parameters.environment().MANAGER_PASSWORD ?? "Manager@2024&API";
+
+const ADMIN_EMAIL: string = parameters.environment().ADMIN_EMAIL ?? "admin.api@nodestore.com";
+const ADMIN_USERNAME: string = parameters.environment().ADMIN_USERNAME ?? "admin";
+const ADMIN_PASSWORD: string = parameters.environment().ADMIN_PASSWORD ?? "Admin@2024&API";
 
 const config = {
     server: {
@@ -93,15 +106,30 @@ const config = {
             type: TYPEORM_TYPE,
             database: TYPEORM_DATABASE,
             synchronize: ENV === 'dev' ? true : false,
+            logging: ENV === 'dev' ? TYPEORM_LOGGING : false,
             entities: [path.join(__dirname, './core/configurations/entities/*.ts')],
-            migrations: [path.join(__dirname, './core/configurations/migrations/*.ts')],
-            cli: {
-                entitiesDir: path.join(__dirname, './core/configurations/entities'),
-                migrationsDir: path.join(__dirname, './core/configurations/migrations')
-            },
+            migrations: [path.join(__dirname, './core/configurations/migrations/*.ts')]
+        }
+    },
+
+    jwt: {
+        secret: JWT_SECRET,
+        expires: JWT_EXPIRES
+    },
+
+    access: {
+        manager: {
+            email: MANAGER_EMAIL.toLowerCase(),
+            username: MANAGER_USERNAME.toLowerCase(),
+            password: md5(MANAGER_PASSWORD +  parameters.environment().MD5_SALT)
+        },
+        admin: {
+            email: ADMIN_EMAIL.toLowerCase(),
+            username: ADMIN_USERNAME.toLowerCase(),
+            password: md5(ADMIN_PASSWORD +  parameters.environment().MD5_SALT)
         }
     }
-
 }
+
 
 export default config;

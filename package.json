@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run dev",
-    "dev": "ts-node-dev src/app.ts",
+    "dev": "npm run migrate && ts-node-dev src/app.ts",
     "prod": "npx tsc && node ./build/app.js",
-    "run": "npm run $1"
+    "run": "npm run $1",
+    "migrate": "npx typeorm-ts-node-commonjs migration:run -d ./src/core/configurations/typeorm.ts"
   },
   "keywords": [],
   "author": "",
