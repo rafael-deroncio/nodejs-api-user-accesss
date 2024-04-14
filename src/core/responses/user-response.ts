@@ -7,12 +7,6 @@ class UserResponse {
     name!: string;
 
     @Expose()
-    username!: string;
-
-    @Expose()
-    email!: string;
-
-    @Expose()
     addresses!: AddressResponse[];
 
     @Expose()

@@ -16,7 +16,7 @@ class TokenService implements ITokenService {
         this._expires = config.jwt.expires;
 
         if (!this._secret) {
-            console.error('A chave _secreta não foi fornecida.');
+            console.error('A chave secreta não foi fornecida.');
             throw new TokenExeption();
         }
     }
@@ -29,24 +29,30 @@ class TokenService implements ITokenService {
     async generate(request: TokenRequest): Promise<TokenResponse> {
         const payload: string | object | Buffer = request.content;
 
-        const access: string = this.sign(payload);
+        let access: string = this.sign(payload);
         const expires: number = this.expires(access);
         const type: string = this.type(request.type);
+
+        if (request.type !== TokenType.Confirmation)
+            access = 'Bearer ' + access;
 
         return { access, expires, type };
     }
 
     async validate(token: string): Promise<JwtPayload | string> {
+console.log(token);
+
+
         if (!this._secret) {
-            console.error('A chave _secreta não foi fornecida.');
+            console.error('A chave secreta não foi fornecida.');
             throw new TokenExeption();
         }
 
-        return jwt.verify(token, this._secret);
+        return jwt.verify(token.replace('Bearer ', ''), this._secret);
     }
 
     async decode(token: string): Promise<JwtPayload | null> {
-        return jwt.decode(token, { complete: true });
+        return jwt.decode(token.replace('Bearer ', ''), { complete: true });
     }
 
     private sign = (payload: string | object | Buffer): string => jwt.sign(payload, this._secret, { expiresIn: this._expires });

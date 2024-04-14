@@ -1,7 +1,7 @@
-import UserResponse from "./user-response";
+import AccountResponse from "./account-response";
 
 class SigninResponse {
-    user!: UserResponse;
+    account!: AccountResponse;
     success!: boolean;
     messages!: string[]
 }

@@ -27,6 +27,7 @@ import config from "../../config";
 import TokenResponse from "../responses/token-response";
 import AddressResponse from "../responses/address-response";
 import TelephoneResponse from "../responses/telephone-response";
+import AccountResponse from "../responses/account-response";
 
 class AccountService implements IAccountService {
 
@@ -111,14 +112,17 @@ class AccountService implements IAccountService {
                         'Email sent to confirm registration.' :
                         'Pending confirmation of account.'
                 ],
-                user: {
-                    name: account.user.name,
+                account: {
                     username: account.username,
                     email: account.email,
-                    addresses: account.user.addresses.map(
-                        address => this._mapper.map(address, AddressResponse)),
-                    telephones: account.user.telephones.map(
-                        telephone => this._mapper.map(telephone, TelephoneResponse)),
+                    role: account.role.role,
+                    user: {
+                        name: account.user.name,
+                        addresses: account.user.addresses.map(
+                            address => this._mapper.map(address, AddressResponse)),
+                        telephones: account.user.telephones.map(
+                            telephone => this._mapper.map(telephone, TelephoneResponse)),
+                    }
                 }
             };
         } catch (error) {
@@ -166,16 +170,11 @@ class AccountService implements IAccountService {
             username: tokenDecoded.payload.username,
             email: tokenDecoded.payload.email
         }
-
-        throw new Error("");
-
     }
 
     async login(request: LoginRequest): Promise<LoginResponse> {
         try {
             const account: AccountModel = await this._accountRepository.getAccount(request.username)
-            
-            console.log(account);
 
             if (!account || account.password != request.password)
                 throw new AccountExeption(
@@ -185,32 +184,33 @@ class AccountService implements IAccountService {
                         'Por favor, revise suas credênciais.'
                     ]);
 
-            const token: TokenResponse = await this._tokenService.generate({
-                type: TokenType.Access,
-                content: {
-                    name: account.user.name,
-                    email: account.email,
-                    username: account.username,
-                }
-            });
-
             return {
-                token,
-                user: {
-                    name: account.user.name,
-                    username: account.username,
-                    email: account.email,
-                    addresses: account.user.addresses.map(
-                        address => this._mapper.map(address, AddressResponse)),
-                    telephones: account.user.telephones.map(
-                        telephone => this._mapper.map(telephone, TelephoneResponse)),
-                }
+                token: await this._tokenService.generate({
+                    type: TokenType.Access,
+                    content: {
+                        name: account.user.name,
+                        email: account.email,
+                        username: account.username,
+                        role: account.role.id
+                    }
+                })
             }
 
         } catch (error) {
             console.error(error);
             throw new AccountExeption('Erro ao efetuar o login');
         }
+    }
+
+    async getAccount(username: string): Promise<AccountResponse> {
+        const account: AccountModel = await this._accountRepository.getAccount(username);
+        
+        if (!account)
+            throw new AccountExeption(
+                'Contas não encontrada!',
+                [`Conta n'ao localizada para o usuário '${username}'`]);
+            
+        return this._mapper.map(account, AccountResponse)
     }
 }
 

@@ -2,7 +2,7 @@ import { Expose } from "class-transformer";
 
 class TelephoneResponse {
     @Expose()
-    phone!: string;
+    number!: string;
     
     @Expose()
     type!: string;

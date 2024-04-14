@@ -63,9 +63,7 @@ class AccountRepository extends BaseRepository<AccountEntity> implements IAccoun
             const account: AccountEntity | null = await this.connection().findOne({
                 where: { username }
             });
-            
-            console.log(account);
-            
+
             return this._mapper.map(account, AccountModel);
         } catch (error) {
             await this.rollback();

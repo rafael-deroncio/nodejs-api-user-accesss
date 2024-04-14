@@ -42,7 +42,7 @@ class AccountEntity {
     user!: UserEntity;
 
     @Expose()
-    @ManyToOne(() => RoleEntity, role => role.accounts)
+    @ManyToOne(() => RoleEntity, role => role.accounts, { eager: true, cascade: true })
     @JoinColumn({ name: 'role' })
     role!: RoleEntity;
 }
