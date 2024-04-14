@@ -53,6 +53,7 @@ class EmailService implements IEmailService {
     private async getTemplate(template: string): Promise<string> {
 
         const filePath = `${path.join(this.PATH, `${template}${this.EXTENSION}`)}`;
+console.log(filePath);
 
         if (!fs.existsSync(filePath)) return "";
 
