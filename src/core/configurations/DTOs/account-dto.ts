@@ -1,4 +1,6 @@
 import { Expose } from "class-transformer";
+import RoleDTO from "./role-dto";
+import UserDTO from "./user-dto";
 
 class AccountDTO {
     @Expose()
@@ -21,6 +23,12 @@ class AccountDTO {
 
     @Expose()
     updated!: Date;
+    
+    @Expose()
+    role!: RoleDTO;
+
+    @Expose()
+    user!: UserDTO;
 }
 
 export default AccountDTO;

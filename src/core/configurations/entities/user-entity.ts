@@ -47,7 +47,7 @@ class UserEntity {
     @Expose()
     @OneToMany(() => TelephoneEntity, telephones => telephones.user, { eager: true, cascade: true })
     @JoinColumn({ name: 'telephones' })
-    telephones!: AddressEntity[];
+    telephones!: TelephoneEntity[];
 }
 
 export default UserEntity;

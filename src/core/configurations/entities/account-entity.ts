@@ -37,7 +37,7 @@ class AccountEntity {
     updated!: Date;
 
     @Expose()
-    @OneToOne(() => UserEntity, user => user.account)
+    @OneToOne(() => UserEntity, user => user.account, { eager: true, cascade: true })
     @JoinColumn({ name: 'user' })
     user!: UserEntity;
 
