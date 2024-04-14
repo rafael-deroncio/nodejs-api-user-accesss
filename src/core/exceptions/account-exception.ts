@@ -2,7 +2,7 @@ import { StatusCodes } from "http-status-codes";
 import ResponseType from "../configurations/enums/response-type-enum";
 import BaseException from "./base-exception";
 
-class AccessExeption extends BaseException {
+class AccountExeption extends BaseException {
     constructor(title?: string, messages?: string[], code?: StatusCodes) {
         super(title, messages, code);
 
@@ -14,4 +14,4 @@ class AccessExeption extends BaseException {
     }
 }
 
-export default AccessExeption;
+export default AccountExeption;
