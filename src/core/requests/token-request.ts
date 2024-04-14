@@ -1,4 +1,4 @@
-import TokenType from "../../core/configurations/enums/token-type-enum";
+import TokenType from "../configurations/enums/token-type-enum";
 
 class TokenRequest {
     content!: object;

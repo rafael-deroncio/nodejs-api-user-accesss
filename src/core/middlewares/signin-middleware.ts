@@ -5,7 +5,7 @@ import IRequestValidator from "../validators/interfaces/irequest-validator";
 import { StatusCodes } from "http-status-codes";
 import IMapper from "../configurations/interfaces/imapper";
 import Mapper from "../configurations/mapper";
-import SiginRequest from "../../api/requests/sigin-request";
+import SiginRequest from "../requests/sigin-request";
 import IOptions from "../configurations/interfaces/ioptions";
 import Options from "../configurations/options";
 import md5 from "md5";

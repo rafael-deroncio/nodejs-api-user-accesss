@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import IAccountService from '../../core/services/interfaces/iaccount-service';
-import AccountService from '../../core/services/account-service';
-import AccountConfirmationResponse from '../responses/account-confirmation-response';
+import IAccountService from '../core/services/interfaces/iaccount-service';
+import AccountService from '../core/services/account-service';
+import AccountConfirmationResponse from '../core/responses/account-confirmation-response';
 
 const _accountService: IAccountService = AccountService.instance();
 

@@ -1,6 +1,6 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
-import TokenRequest from "../../api/requests/token-request";
-import TokenResponse from "../../api/responses/token-response";
+import TokenRequest from "../requests/token-request";
+import TokenResponse from "../responses/token-response";
 import config from "../../config";
 import TokenType from "../configurations/enums/token-type-enum";
 import TokenExeption from "../exceptions/token-exception";

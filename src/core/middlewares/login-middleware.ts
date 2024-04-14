@@ -8,7 +8,7 @@ import IOptions from "../configurations/interfaces/ioptions";
 import Options from "../configurations/options";
 import md5 from "md5";
 import LoginContract from "../validators/contracts/login-contract";
-import LoginRequest from "../../api/requests/login-request";
+import LoginRequest from "../requests/login-request";
 
 const mapper: IMapper = Mapper.instance();
 const parameters: IOptions = Options.instance();

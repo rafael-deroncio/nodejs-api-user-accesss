@@ -1,9 +1,9 @@
 import { JwtPayload } from "jsonwebtoken";
-import LoginRequest from "../../api/requests/login-request";
-import SiginRequest from "../../api/requests/sigin-request";
-import AccountConfirmationResponse from "../../api/responses/account-confirmation-response";
-import LoginResponse from "../../api/responses/login-response";
-import SigninResponse from "../../api/responses/signin-response";
+import LoginRequest from "../requests/login-request";
+import SiginRequest from "../requests/sigin-request";
+import AccountConfirmationResponse from "../responses/account-confirmation-response";
+import LoginResponse from "../responses/login-response";
+import SigninResponse from "../responses/signin-response";
 import IMapper from "../configurations/interfaces/imapper";
 import Mapper from "../configurations/mapper";
 import AccountExeption from "../exceptions/account-exception";
@@ -24,9 +24,9 @@ import RoleType from "../configurations/enums/role-type-enum";
 import AccountModel from "../models/account-model";
 import TokenType from "../configurations/enums/token-type-enum";
 import config from "../../config";
-import TokenResponse from "../../api/responses/token-response";
-import AddressResponse from "../../api/responses/address-response";
-import TelephoneResponse from "../../api/responses/telephone-response";
+import TokenResponse from "../responses/token-response";
+import AddressResponse from "../responses/address-response";
+import TelephoneResponse from "../responses/telephone-response";
 
 class AccountService implements IAccountService {
 

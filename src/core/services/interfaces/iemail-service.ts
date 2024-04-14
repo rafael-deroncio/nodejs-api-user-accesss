@@ -1,4 +1,4 @@
-import EmailRequest from "../../../api/requests/email-request";
+import EmailRequest from "../../requests/email-request";
 
 interface IEmailService {
     send(template: string, request: EmailRequest): Promise<boolean>

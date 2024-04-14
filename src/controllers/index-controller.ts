@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import IOptions from '../../core/configurations/interfaces/ioptions';
-import Options from '../../core/configurations/options';
+import IOptions from '../core/configurations/interfaces/ioptions';
+import Options from '../core/configurations/options';
 
 const _parameters: IOptions = Options.instance();
 

@@ -1,7 +1,7 @@
 import express from "express";
 import http from 'http';
 import config from './config';
-import routes from "./api/routes/routes";
+import routes from "./routes/routes";
 import morgan from "morgan";
 import exception from "./core/handlers/global-error-handler";
 import * as typeorm from "./core/configurations/typeorm";

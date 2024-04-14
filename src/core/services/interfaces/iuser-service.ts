@@ -1,5 +1,5 @@
-import UserRequest from "../../../api/requests/user-request";
-import UserResponse from "../../../api/responses/user-response";
+import UserRequest from "../../requests/user-request";
+import UserResponse from "../../responses/user-response";
 
 interface IUserService {
     createUSer(request: UserRequest): Promise<UserResponse>

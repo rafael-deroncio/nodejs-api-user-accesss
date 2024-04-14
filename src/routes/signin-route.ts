@@ -1,6 +1,6 @@
 import controller from "../controllers/signin-controller";
 import { Router } from "express";
-import middleware from "../../core/middlewares/middlewares";
+import middleware from "../core/middlewares/middlewares";
 
 const signin: Router = Router();
 

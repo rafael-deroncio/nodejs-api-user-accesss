@@ -1,8 +1,8 @@
-import LoginRequest from "../../../api/requests/login-request";
-import SiginRequest from "../../../api/requests/sigin-request";
-import AccountConfirmationResponse from "../../../api/responses/account-confirmation-response";
-import LoginResponse from "../../../api/responses/login-response";
-import SigninResponse from "../../../api/responses/signin-response";
+import LoginRequest from "../../requests/login-request";
+import SiginRequest from "../../requests/sigin-request";
+import AccountConfirmationResponse from "../../responses/account-confirmation-response";
+import LoginResponse from "../../responses/login-response";
+import SigninResponse from "../../responses/signin-response";
 
 interface IAccountService {
     signin(request: SiginRequest): Promise<SigninResponse>;

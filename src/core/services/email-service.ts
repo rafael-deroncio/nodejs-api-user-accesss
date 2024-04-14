@@ -1,4 +1,4 @@
-import EmailRequest from "../../api/requests/email-request";
+import EmailRequest from "../requests/email-request";
 import config from "../../config";
 import IEmailService from "./interfaces/iemail-service";
 import path from 'path'
