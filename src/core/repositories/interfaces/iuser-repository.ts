@@ -7,6 +7,7 @@ interface IUserRepository {
     getUserByEmail(email: string): Promise<UserModel | null>;
     createUser(argument: UserArgument): Promise<UserModel | null>
     updateUser(): Promise<UserModel | null>
+    activateUser(email: string): Promise<UserModel | null>
     deleteUser(): Promise<boolean>
 
     getSequence(): Promise<number | null>
