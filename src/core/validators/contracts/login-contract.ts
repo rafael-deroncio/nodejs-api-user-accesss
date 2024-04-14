@@ -4,9 +4,8 @@ import IRequestContract from "./interfaces/irequest-contract";
 class LoginContract implements IRequestContract {
 
     private static schema = Joi.object({
-        username: Joi.string().email().required().messages({
-            'any.required': 'Username is required.',
-            'string.email': 'Invalid Username format.'
+        username: Joi.string().required().messages({
+            'any.required': 'Username is required.'
         }),
         password: Joi.string()
             .min(8)
