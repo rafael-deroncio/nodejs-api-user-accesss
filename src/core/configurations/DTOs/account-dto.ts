@@ -1,6 +1,6 @@
 import { Expose } from "class-transformer";
 
-class AccessDTO {
+class AccountDTO {
     @Expose()
     id!: number;
 
@@ -23,4 +23,4 @@ class AccessDTO {
     updated!: Date;
 }
 
-export default AccessDTO;
+export default AccountDTO;

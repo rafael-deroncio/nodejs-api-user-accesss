@@ -8,9 +8,6 @@ class RoleDTO {
     role!: string;
 
     @Expose()
-    active!: boolean;
-
-    @Expose()
     created!: Date;
 
     @Expose()

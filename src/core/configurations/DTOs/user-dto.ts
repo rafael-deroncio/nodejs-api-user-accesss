@@ -1,9 +1,8 @@
 import { Expose } from "class-transformer";
-import AccessDTO from "./access-dto";
 import AddressDTO from "./address-dto";
-import CredentialDTO from "./credential-dto";
 import RoleDTO from "./role-dto";
 import TelephoneDTO from "./telephone-dto";
+import AccountDTO from "./account-dto";
 
 class UserDTO {
     @Expose()
@@ -19,9 +18,6 @@ class UserDTO {
     sex!: string;
 
     @Expose()
-    active!: boolean;
-
-    @Expose()
     created!: Date;
 
     @Expose()
@@ -31,16 +27,13 @@ class UserDTO {
     role!: RoleDTO;
 
     @Expose()
-    credential!: CredentialDTO;
+    account!: AccountDTO;
 
     @Expose()
     addresses!: AddressDTO[];
 
     @Expose()
     telephones!: TelephoneDTO[];
-
-    @Expose()
-    accesses!: AccessDTO[];
 }
 
 export default UserDTO;

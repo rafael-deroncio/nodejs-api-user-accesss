@@ -32,9 +32,6 @@ class AddressDTO {
     principal!: boolean;
 
     @Expose()
-    active!: boolean;
-
-    @Expose()
     created!: Date;
 
     @Expose()
