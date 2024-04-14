@@ -1,9 +1,9 @@
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import UserEntity from "./user-entity";
 import { Expose } from "class-transformer";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import AccountEntity from "./account_entity";
 
-@Entity({ name: 'user_roles' })
-class RoleEtity {
+@Entity({ name: 'roles' })
+class RoleEntity {
     @Expose()
     @PrimaryGeneratedColumn('increment')
     id!: number;
@@ -11,10 +11,6 @@ class RoleEtity {
     @Expose()
     @Column()
     role!: string;
-
-    @Expose()
-    @Column({default: true})
-    active!: boolean;
 
     @Expose()
     @Column()
@@ -26,8 +22,9 @@ class RoleEtity {
     @UpdateDateColumn()
     updated!: Date;
 
-    @OneToMany(() => UserEntity, user => user.role)
-    users!: UserEntity[];
+    @Expose()
+    @OneToMany(() => AccountEntity, account => account.role)
+    accounts!: AccountEntity[];
 }
 
-export default RoleEtity;
+export default RoleEntity;

@@ -1,10 +1,8 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import RoleEtity from "./role-entity";
+import { Expose } from "class-transformer";
+import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import AddressEntity from "./address-entity";
 import TelephoneEntity from "./telephone-entity";
-import CredentialEntity from "./credentials_entity";
-import AccessEntity from "./access-entity";
-import { Expose } from "class-transformer";
+import AccountEntity from "./account_entity";
 
 @Entity({ name: 'users' })
 class UserEntity {
@@ -18,48 +16,35 @@ class UserEntity {
     name!: string;
 
     @Expose()
-    @Column()
+    @Column({name: 'birth_date'})
     birthDate!: Date;
 
     @Expose()
     @Column()
     sex!: string;
-
-    @Expose()
-    @Column({default: false})
-    active!: boolean;
     
     @Expose()
-    @Column()
     @CreateDateColumn()
     created!: Date;
 
     @Expose()
-    @Column()
     @UpdateDateColumn()
     updated!: Date;
-
+    
     @Expose()
-    @ManyToOne(() => RoleEtity, role => role.users, { eager: true, cascade: true })
-    @JoinColumn({ name: 'role_id' })
-    role!: RoleEtity;
-
-    @Expose()
-    @ManyToOne(() => CredentialEntity, credential => credential.users, { eager: true, cascade: true })
-    @JoinColumn({ name: 'credential_id' })
-    credential!: CredentialEntity;
+    @OneToOne(() => AccountEntity, account => account.user)
+    @JoinColumn({ name: 'account' })
+    account!: AccountEntity;
 
     @Expose()
     @OneToMany(() => AddressEntity, address => address.user, { eager: true, cascade: true })
+    @JoinColumn({ name: 'addresses' })
     addresses!: AddressEntity[];
 
     @Expose()
-    @OneToMany(() => TelephoneEntity, address => address.user, { eager: true, cascade: true })
-    telephones!: TelephoneEntity[];
-
-    @Expose()
-    @OneToMany(() => AccessEntity, access => access.user, { eager: true, cascade: true })
-    accesses!: AccessEntity[];
+    @OneToMany(() => TelephoneEntity, telephones => telephones.user, { eager: true, cascade: true })
+    @JoinColumn({ name: 'telephones' })
+    telephones!: AddressEntity[];
 }
 
 export default UserEntity;

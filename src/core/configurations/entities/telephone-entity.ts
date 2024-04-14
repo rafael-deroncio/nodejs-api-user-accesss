@@ -1,12 +1,12 @@
+import { Expose } from "class-transformer";
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import UserEntity from "./user-entity";
-import { Expose } from "class-transformer";
 
-@Entity({ name: 'user_telephones' })
+@Entity({ name: 'telephones' })
 class TelephoneEntity {
     
     @Expose()
-    @PrimaryGeneratedColumn({ name: 'address_id' })
+    @PrimaryGeneratedColumn('increment')
     id!: number
 
     @Expose()
@@ -37,7 +37,7 @@ class TelephoneEntity {
 
     @Expose()
     @ManyToOne(() => UserEntity, user => user.telephones)
-    @JoinColumn({ name: 'user_id' })
+    @JoinColumn({ name: 'user' })
     user!: UserEntity;
 }
 

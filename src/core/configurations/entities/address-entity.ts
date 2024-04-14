@@ -1,8 +1,8 @@
+import { Expose } from "class-transformer";
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import UserEntity from "./user-entity";
-import { Expose } from "class-transformer";
 
-@Entity({ name: 'user_addresses' })
+@Entity({ name: 'addresses' })
 class AddressEntity {
     
     @Expose()
@@ -46,18 +46,15 @@ class AddressEntity {
     principal!: boolean;
 
     @Expose()
-    @Column()
     @CreateDateColumn()
     created!: Date;
 
     @Expose()
-    @Column()
     @UpdateDateColumn()
     updated!: Date;
 
-    @Expose()
     @ManyToOne(() => UserEntity, user => user.addresses)
-    @JoinColumn({ name: 'user_id' })
+    @JoinColumn({ name: 'user' })
     user!: UserEntity;
 }
 

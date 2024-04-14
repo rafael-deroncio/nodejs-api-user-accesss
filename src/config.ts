@@ -27,6 +27,11 @@ const ADMIN_EMAIL: string = parameters.environment().ADMIN_EMAIL ?? "admin.api@n
 const ADMIN_USERNAME: string = parameters.environment().ADMIN_USERNAME ?? "admin";
 const ADMIN_PASSWORD: string = parameters.environment().ADMIN_PASSWORD ?? "Admin@2024&API";
 
+const EMAIL_TEMPL_BASE_PATH: string = parameters.environment().EMAIL_TEMPL_BASE_PATH ?? "/templates";
+const EMAIL_TEMPL_BASE_EXTENSION: string = parameters.environment().EMAIL_TEMPL_BASE_EXTENSION ?? ".html";
+const EMAIL_SENDGRID_SECRET: string = parameters.environment().EMAIL_SENDGRID_SECRET ?? "";
+const EMAIL_SENDGRID_FROM: string = parameters.environment().EMAIL_SENDGRID_FROM ?? "";
+
 const config = {
     server: {
         host: HOST,
@@ -121,12 +126,21 @@ const config = {
         manager: {
             email: MANAGER_EMAIL.toLowerCase(),
             username: MANAGER_USERNAME.toLowerCase(),
-            password: md5(MANAGER_PASSWORD +  parameters.environment().MD5_SALT)
+            password: md5(MANAGER_PASSWORD + parameters.environment().MD5_SALT)
         },
         admin: {
             email: ADMIN_EMAIL.toLowerCase(),
             username: ADMIN_USERNAME.toLowerCase(),
-            password: md5(ADMIN_PASSWORD +  parameters.environment().MD5_SALT)
+            password: md5(ADMIN_PASSWORD + parameters.environment().MD5_SALT)
+        }
+    },
+
+    email: {
+        templates: EMAIL_TEMPL_BASE_PATH,
+        extension: EMAIL_TEMPL_BASE_EXTENSION,
+        sendgrid: {
+            secret: EMAIL_SENDGRID_SECRET,
+            from: EMAIL_SENDGRID_FROM
         }
     }
 }
