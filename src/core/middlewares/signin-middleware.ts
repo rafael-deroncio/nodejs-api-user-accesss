@@ -22,11 +22,10 @@ const signin = (request: Request, response: Response, next: NextFunction) => {
             .send({ success: false, errors: validator.errors });
 
     const signin = mapper.map(request.body, SiginRequest);
-
     signin.password = md5(request.body + parameters.environment().MD5_SALT);
 
     request.body = signin;
-
+   
     next();
 };
 
