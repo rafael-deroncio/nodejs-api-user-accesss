@@ -1,6 +1,6 @@
 import { Expose } from "class-transformer";
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import AccountEntity from "./account_entity";
+import AccountEntity from "./account-entity";
 
 @Entity({ name: 'roles' })
 class RoleEntity {

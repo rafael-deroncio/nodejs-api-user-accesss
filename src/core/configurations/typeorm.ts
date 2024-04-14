@@ -4,7 +4,7 @@ import RoleEtity from "./entities/role-entity";
 import RoleType from "./enums/role-type-enum";
 import UserEntity from "./entities/user-entity";
 import SexTypeEnum from "./enums/sex-type-enum";
-import AccountEntity from "./entities/account_entity";
+import AccountEntity from "./entities/account-entity";
 import DatabaseException from "../exceptions/database-exception";
 
 export const options = { ...config.database.options } as DataSourceOptions
@@ -26,28 +26,30 @@ export const initialize = async () => {
         // Save accounts
         if ((await dataSource.getRepository(UserEntity).find()).length == 0) {
             const manager: AccountEntity = {
-                username: config.access.manager.username,
-                email: config.access.manager.email,
-                password: config.access.manager.password,
+                username: config.accounts.manager.username,
+                email: config.accounts.manager.email,
+                password: config.accounts.manager.password,
                 active: true,
                 role: await dataSource.getRepository(RoleEtity).findOne({ where: { id: RoleType.Manager } }) ?? new RoleEtity(),
                 user: await dataSource.getRepository(UserEntity).save({
                     name: RoleType[RoleType.Manager],
                     birthDate: new Date('1990-01-01'),
                     sex: SexTypeEnum[SexTypeEnum.Other],
+                    picture: config.accounts.manager.picture
                 }) as UserEntity
             } as AccountEntity;
 
             const admin: AccountEntity = {
-                username: config.access.admin.username,
-                email: config.access.admin.email,
-                password: config.access.admin.password,
+                username: config.accounts.admin.username,
+                email: config.accounts.admin.email,
+                password: config.accounts.admin.password,
                 active: true,
                 role: await dataSource.getRepository(RoleEtity).findOne({ where: { id: RoleType.Admin } }) ?? new RoleEtity(),
                 user: await dataSource.getRepository(UserEntity).save({
                     name: RoleType[RoleType.Admin],
                     birthDate: new Date('1990-01-01'),
                     sex: SexTypeEnum[SexTypeEnum.Other],
+                    picture: config.accounts.admin.picture
                 }) as UserEntity
             } as AccountEntity;
 

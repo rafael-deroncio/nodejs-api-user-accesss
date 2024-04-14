@@ -2,7 +2,7 @@ import { Expose } from "class-transformer";
 import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import AddressEntity from "./address-entity";
 import TelephoneEntity from "./telephone-entity";
-import AccountEntity from "./account_entity";
+import AccountEntity from "./account-entity";
 
 @Entity({ name: 'users' })
 class UserEntity {
@@ -22,6 +22,10 @@ class UserEntity {
     @Expose()
     @Column()
     sex!: string;
+
+    @Expose()
+    @Column()
+    picture!: string;
     
     @Expose()
     @CreateDateColumn()
@@ -33,7 +37,6 @@ class UserEntity {
     
     @Expose()
     @OneToOne(() => AccountEntity, account => account.user)
-    @JoinColumn({ name: 'account' })
     account!: AccountEntity;
 
     @Expose()
