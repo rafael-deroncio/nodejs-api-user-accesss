@@ -7,6 +7,12 @@ class UserResponse {
     name!: string;
 
     @Expose()
+    birthDate!: Date;
+
+    @Expose()
+    sex!:string;
+
+    @Expose()
     addresses!: AddressResponse[];
 
     @Expose()
