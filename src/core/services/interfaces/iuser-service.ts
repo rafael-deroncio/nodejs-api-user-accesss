@@ -1,7 +1,10 @@
+import UserRequest from "../../requests/user-request";
 import UserResponse from "../../responses/user-response";
 
 interface IUserService {
-    getUserByEmalil(email: string): Promise<UserResponse>
+    getUser(username: string): Promise<UserResponse>
+    getUsers(username: string): Promise<UserResponse[]>
+    updateUser(username: string, request: UserRequest): Promise<UserResponse[]>
 }
 
 export default IUserService;

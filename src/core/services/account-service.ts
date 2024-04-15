@@ -116,6 +116,7 @@ class AccountService implements IAccountService {
                     username: account.username,
                     email: account.email,
                     role: account.role.role,
+                    
                     user: {
                         name: account.user.name,
                         addresses: account.user.addresses.map(
