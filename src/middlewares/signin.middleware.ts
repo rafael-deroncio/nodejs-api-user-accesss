@@ -3,7 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import IRequestValidator from "../validators/interfaces/irequest-validator";
 import RequestValidator from "../validators/request-validator";
 import SigninContract from "../validators/contracts/signin-contract";
-import SiginRequest from "../requests/sigin.request";
+import SigninRequest from "../requests/sigin.request";
 import IMapper from "../configurations/interfaces/imapper";
 import Mapper from "../configurations/mapper";
 import md5 from "md5";
@@ -20,7 +20,7 @@ const signin = (request: Request, response: Response, next: NextFunction) => {
 
     console.log(validator.isValid, validator);
 
-    const signin = mapper.map(request.body, SiginRequest);
+    const signin = mapper.map(request.body, SigninRequest);
     signin.password = md5(request.body + config.hasher.salt);
 
     request.body = signin;
