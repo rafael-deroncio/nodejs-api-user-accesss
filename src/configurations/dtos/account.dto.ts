@@ -30,6 +30,7 @@ class AccountDTO {
 
     @Expose()
     role!: RoleDTO;
+
 }
 
 export default AccountDTO;

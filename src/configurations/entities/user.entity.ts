@@ -1,4 +1,4 @@
-import { Expose } from "class-transformer";
+import { Expose, Type } from "class-transformer";
 import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import AddressEntity from "./address.entity";
 import TelephoneEntity from "./telephone.entity";
@@ -40,14 +40,16 @@ class UserEntity {
     account!: AccountEntity;
 
     @Expose()
+    @Type(() => AddressEntity)
     @OneToMany(() => AddressEntity, address => address.user, { eager: true, cascade: true })
     @JoinColumn({ name: 'addresses' })
-    addresses!: Array<AddressEntity>;
+    addresses!: AddressEntity[];
 
     @Expose()
+    @Type(() => TelephoneEntity)
     @OneToMany(() => TelephoneEntity, telephones => telephones.user, { eager: true, cascade: true })
     @JoinColumn({ name: 'telephones' })
-    telephones!: Array<TelephoneEntity>;
+    telephones!: TelephoneEntity[];
 }
 
 export default UserEntity;

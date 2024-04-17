@@ -1,4 +1,4 @@
-import { Expose } from "class-transformer";
+import { Expose, Type } from "class-transformer";
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import AccountEntity from "./account.entity";
 
@@ -21,8 +21,9 @@ class RoleEntity {
     updated!: Date;
 
     @Expose()
+    @Type(() => AccountEntity)
     @OneToMany(() => AccountEntity, account => account.role, { cascade: true })
-    accounts!: Array<AccountEntity>;
+    accounts!: AccountEntity[];
 }
 
 export default RoleEntity;

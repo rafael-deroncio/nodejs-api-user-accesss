@@ -1,4 +1,4 @@
-import { Expose } from "class-transformer";
+import { Expose, Type } from "class-transformer";
 import AddressRequest from "./address.rerquest";
 import TelephoneRequest from "./telephone.request";
 import UserDTO from "../configurations/dtos/user.dto";
@@ -21,10 +21,12 @@ class UserRequest implements Omit<UserDTO, 'name' | 'addresses' | 'telephones' |
     picture?: string;
 
     @Expose()
-    addresses!: Array<AddressRequest>;
+    @Type(() => AddressRequest)
+    addresses!: AddressRequest[];
 
     @Expose()
-    telephones!: Array<TelephoneRequest>;
+    @Type(() => TelephoneRequest)
+    telephones!: TelephoneRequest[];
 }
 
 export default UserRequest;

@@ -1,4 +1,4 @@
-import { Expose } from "class-transformer";
+import { Expose, Type } from "class-transformer";
 import AddressDTO from "./address.dto";
 import TelephoneDTO from "./telephone.dto";
 
@@ -26,10 +26,13 @@ class UserDTO {
     updated!: Date;
 
     @Expose()
-    addresses!: Array<AddressDTO>;
+    @Type(() => AddressDTO)
+    addresses!: AddressDTO[];
 
     @Expose()
-    telephones!: Array<TelephoneDTO>;
+    
+    @Type(() => TelephoneDTO)
+    telephones!: TelephoneDTO[];
 }
 
 export default UserDTO;

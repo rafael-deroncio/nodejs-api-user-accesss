@@ -11,9 +11,15 @@ class Mapper implements IMapper {
         return this._instance
     }
 
+    private _options: object = { excludeExtraneousValues: true, enableImplicitConversion: true }
+
     map<T>(source: object | null, target: new () => T): T {
         if (!source) null as T
-        return plainToClass(target, source, { excludeExtraneousValues: true }) as T;
+        return plainToClass(target, source, this._options);
+    }
+    maps<T>(source: object[] | null, target: new () => T): T[] {
+        if (!source) return [];
+        return source.map(item => plainToClass(target, item, this._options));
     }
 }
 

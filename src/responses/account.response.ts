@@ -1,4 +1,4 @@
-import { Expose } from "class-transformer";
+import { Expose, Transform } from "class-transformer";
 import UserResponse from "./user.response";
 import AccountDTO from "../configurations/dtos/account.dto";
 
@@ -14,6 +14,7 @@ class AccountResponse implements Omit<AccountDTO, 'password' | 'user' | 'role' |
     active!: boolean;
 
     @Expose()
+    @Transform(({ obj }) => obj.role.role)
     role!: string;
 
     @Expose()
