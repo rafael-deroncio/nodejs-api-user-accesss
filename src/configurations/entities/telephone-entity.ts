@@ -4,25 +4,25 @@ import UserEntity from "./user-entity";
 
 @Entity({ name: 'telephones' })
 class TelephoneEntity {
-    
+
     @Expose()
     @PrimaryGeneratedColumn('increment')
     id!: number
 
     @Expose()
-    @Column()
+    @Column({ type: 'varchar' })
     number!: string;
 
     @Expose()
-    @Column()
+    @Column({ type: 'varchar' })
     type!: string;
 
     @Expose()
-    @Column()
+    @Column({ type: 'boolean', default: false })
     principal!: boolean;
 
     @Expose()
-    @Column({default: false})
+    @Column({ type: 'boolean', default: false })
     active!: boolean;
 
     @Expose()

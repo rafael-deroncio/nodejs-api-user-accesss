@@ -12,21 +12,21 @@ class UserEntity {
     id!: number;
 
     @Expose()
-    @Column()
+    @Column({ type: 'varchar' })
     name!: string;
 
     @Expose()
-    @Column({name: 'birth_date'})
+    @Column({ type: "date", name: 'birth_date' })
     birthDate!: Date;
 
     @Expose()
-    @Column()
+    @Column({ type: 'varchar' })
     sex!: string;
 
     @Expose()
-    @Column()
+    @Column({ type: 'varchar' })
     picture!: string;
-    
+
     @Expose()
     @CreateDateColumn()
     created!: Date;
@@ -34,7 +34,7 @@ class UserEntity {
     @Expose()
     @UpdateDateColumn()
     updated!: Date;
-    
+
     @Expose()
     @OneToOne(() => AccountEntity, account => account.user)
     account!: AccountEntity;
@@ -42,12 +42,12 @@ class UserEntity {
     @Expose()
     @OneToMany(() => AddressEntity, address => address.user, { eager: true, cascade: true })
     @JoinColumn({ name: 'addresses' })
-    addresses!: AddressEntity[];
+    addresses!: Array<AddressEntity>;
 
     @Expose()
     @OneToMany(() => TelephoneEntity, telephones => telephones.user, { eager: true, cascade: true })
     @JoinColumn({ name: 'telephones' })
-    telephones!: TelephoneEntity[];
+    telephones!: Array<TelephoneEntity>;
 }
 
 export default UserEntity;

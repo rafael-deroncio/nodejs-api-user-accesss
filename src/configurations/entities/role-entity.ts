@@ -9,7 +9,7 @@ class RoleEntity {
     id!: number;
 
     @Expose()
-    @Column()
+    @Column({ type: 'varchar' })
     role!: string;
 
     @Expose()
@@ -23,8 +23,8 @@ class RoleEntity {
     updated!: Date;
 
     @Expose()
-    @OneToMany(() => AccountEntity, account => account.role)
-    accounts!: AccountEntity[];
+    @OneToMany(() => AccountEntity, account => account.role, { eager: true, cascade: true })
+    accounts!: Array<AccountEntity>;
 }
 
 export default RoleEntity;

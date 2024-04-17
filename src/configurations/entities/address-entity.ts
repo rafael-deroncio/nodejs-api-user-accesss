@@ -4,46 +4,50 @@ import UserEntity from "./user-entity";
 
 @Entity({ name: 'addresses' })
 class AddressEntity {
-    
+
     @Expose()
     @PrimaryGeneratedColumn('increment')
     id!: number
 
     @Expose()
-    @Column()
+    @Column({ type: 'varchar' })
     street!: string;
 
     @Expose()
-    @Column()
+    @Column({ type: 'varchar' })
     number!: string;
 
     @Expose()
-    @Column()
+    @Column({ type: 'varchar' })
     district!: string;
 
     @Expose()
-    @Column()
+    @Column({ type: 'varchar' })
     city!: string;
 
     @Expose()
-    @Column()
+    @Column({ type: 'varchar' })
     state!: string;
 
     @Expose()
-    @Column()
+    @Column({ type: 'varchar' })
     country!: string;
 
     @Expose()
-    @Column()
+    @Column({ type: 'varchar' })
     zipcode!: string;
 
     @Expose()
-    @Column()
+    @Column({ type: 'varchar' })
     type!: string;
 
     @Expose()
-    @Column()
+    @Column({ type: 'boolean', default: false })
     principal!: boolean;
+
+    @Expose()
+    @Column({ type: 'boolean', default: false })
+    active!: boolean;
 
     @Expose()
     @CreateDateColumn()

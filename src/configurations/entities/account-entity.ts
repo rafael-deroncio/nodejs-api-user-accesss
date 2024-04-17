@@ -5,25 +5,25 @@ import RoleEntity from "./role-entity";
 
 @Entity({ name: 'accounts' })
 class AccountEntity {
-    
+
     @Expose()
     @PrimaryGeneratedColumn('increment')
     id!: number;
 
     @Expose()
-    @Column()
+    @Column({ type: 'varchar' })
     username!: string;
 
     @Expose()
-    @Column()
+    @Column({ type: 'varchar' })
     email!: string;
 
     @Expose()
-    @Column()
+    @Column({ type: 'varchar' })
     password!: string;
 
     @Expose()
-    @Column({default: false})
+    @Column({ type: 'boolean', default: false })
     active!: boolean;
 
     @Expose()
