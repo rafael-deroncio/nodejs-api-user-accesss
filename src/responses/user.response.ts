@@ -7,6 +7,15 @@ class UserResponse {
     name!: string;
 
     @Expose()
+    sex!: string;
+
+    @Expose()
+    age!: number;
+
+    @Expose()
+    picture!: string;
+
+    @Expose()
     telephone!: TelephoneResponse
 
     @Expose()

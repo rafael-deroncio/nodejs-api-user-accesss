@@ -3,6 +3,7 @@ import AddressRequest from "./address.rerquest";
 import TelephoneRequest from "./telephone.request";
 
 class UserRequest {
+    
     @Expose()
     firstName!: string;
 

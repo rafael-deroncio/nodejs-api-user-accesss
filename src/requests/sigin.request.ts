@@ -1,7 +1,8 @@
 import { Expose } from "class-transformer";
 import UserRequest from "./user.request";
 
-class SiginRequest {
+class SigninRequest {
+    
     @Expose()
     email!: string;
 
@@ -11,4 +12,4 @@ class SiginRequest {
     user!: UserRequest;
 }
 
-export default SiginRequest;
+export default SigninRequest;

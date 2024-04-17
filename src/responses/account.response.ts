@@ -13,9 +13,6 @@ class AccountResponse {
     role!: string;
 
     @Expose()
-    active!: boolean
-
-    @Expose()
     user!: UserResponse;
 }
 
