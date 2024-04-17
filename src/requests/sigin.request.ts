@@ -1,5 +1,5 @@
 import { Expose } from "class-transformer";
-import UserRequest from "./user-request";
+import UserRequest from "./user.request";
 
 class SiginRequest {
     @Expose()

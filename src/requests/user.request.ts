@@ -1,6 +1,6 @@
 import { Expose } from "class-transformer";
-import AddressRequest from "./address-rerquest";
-import TelephoneRequest from "./telephone-request";
+import AddressRequest from "./address.rerquest";
+import TelephoneRequest from "./telephone.request";
 
 class UserRequest {
     @Expose()
