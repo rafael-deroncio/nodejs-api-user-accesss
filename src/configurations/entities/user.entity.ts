@@ -25,7 +25,7 @@ class UserEntity {
 
     @Expose()
     @Column({ type: 'varchar' })
-    picture!: string;
+    picture?: string;
 
     @Expose()
     @CreateDateColumn()

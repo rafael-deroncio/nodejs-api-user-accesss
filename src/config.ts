@@ -118,7 +118,7 @@ const config = {
             database: TYPEORM_DATABASE,
             synchronize: ENV === 'dev' ? true : false,
             logging: ENV === 'dev' ? TYPEORM_LOGGING : false,
-            entities: [path.join(__dirname, './configurations/entities/*.`{ts,js}`')],
+            entities: [path.join(__dirname, './configurations/entities/*.{ts,js}')],
             migrations: [path.join(__dirname, './configurations/migrations/*.{ts,js}')]
         }
     },
@@ -132,14 +132,12 @@ const config = {
         manager: {
             email: MANAGER_EMAIL.toLowerCase(),
             username: MANAGER_USERNAME.toLowerCase(),
-            password: md5(MANAGER_PASSWORD + parameters.environment().MD5_SALT),
-            picture: parameters.environment().AVATAR_OTHER ?? '/avatar_pic_other_default.png'
+            password: md5(MANAGER_PASSWORD + parameters.environment().MD5_SALT)
         },
         admin: {
             email: ADMIN_EMAIL.toLowerCase(),
             username: ADMIN_USERNAME.toLowerCase(),
-            password: md5(ADMIN_PASSWORD + parameters.environment().MD5_SALT),
-            picture: parameters.environment().AVATAR_OTHER ?? '/avatar_pic_other_default.png'
+            password: md5(ADMIN_PASSWORD + parameters.environment().MD5_SALT)
         }
     },
 

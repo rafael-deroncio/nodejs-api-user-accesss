@@ -21,7 +21,7 @@ class RoleEntity {
     updated!: Date;
 
     @Expose()
-    @OneToMany(() => AccountEntity, account => account.role, { eager: true, cascade: true })
+    @OneToMany(() => AccountEntity, account => account.role, { cascade: true })
     accounts!: Array<AccountEntity>;
 }
 
