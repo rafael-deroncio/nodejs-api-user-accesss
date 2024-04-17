@@ -3,7 +3,7 @@ import IRequestContract from "./interfaces/irequest-contract";
 
 class LoginContract implements IRequestContract {
 
-    private static schema = Joi.object({
+    private schema = Joi.object({
         username: Joi.string().required().messages({
             'any.required': 'Username is required.'
         }),
@@ -20,8 +20,8 @@ class LoginContract implements IRequestContract {
             }),
     });
 
-    getSchema() {
-        return LoginContract.schema
+    getSchema(): Joi.ObjectSchema {
+        return this.schema
     }
 }
 

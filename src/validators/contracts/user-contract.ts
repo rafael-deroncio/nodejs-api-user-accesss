@@ -31,7 +31,7 @@ class UserContract implements IRequestContract {
         telephones: Joi.array().items(UserContract.telephonesSchema).required()
     }).options({ abortEarly: false });
 
-    getSchema() {
+    getSchema(): Joi.ObjectSchema {
         return this.schema
     }
 }

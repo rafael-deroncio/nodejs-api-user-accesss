@@ -12,17 +12,13 @@ import config from "../config";
 const mapper: IMapper = Mapper.instance();
 
 const signin = (request: Request, response: Response, next: NextFunction) => {
-
-try {
-    console.log(request.body);
-
     const validator: IRequestValidator = new RequestValidator(SigninContract, request.body);
 
     if (!validator.isValid)
         return response.status(StatusCodes.BAD_REQUEST)
             .send({ success: false, errors: validator.errors });
 
-    console.log(validator.isValid, validator);    
+    console.log(validator.isValid, validator);
 
     const signin = mapper.map(request.body, SiginRequest);
     signin.password = md5(request.body + config.hasher.salt);
@@ -30,10 +26,6 @@ try {
     request.body = signin;
 
     next();
-} catch (error) {
-    console.log(error);
-    next();
-}
 }
 
 export default signin;
