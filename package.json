@@ -8,7 +8,7 @@
     "dev": "npm run migrate && ts-node-dev src/app.ts",
     "prod": "npx tsc && node ./build/app.js",
     "run": "npm run $1",
-    "migrate": "npx typeorm-ts-node-commonjs migration:run -d ./src/core/configurations/typeorm.ts"
+    "migrate": "npx typeorm-ts-node-commonjs migration:run -d ./src/configurations/typeorm.ts"
   },
   "keywords": [],
   "author": "",

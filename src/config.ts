@@ -1,5 +1,5 @@
-import IOptions from "./core/configurations/interfaces/ioptions";
-import Options from "./core/configurations/options";
+import IOptions from "./configurations/interfaces/ioptions";
+import Options from "./configurations/options";
 import http from 'http';
 import fs from 'fs';
 import path from 'path';
@@ -11,6 +11,10 @@ const HOST: string = parameters.environment().APP_HOST ?? 'localhost';
 const PORT: string = parameters.environment().APP_PORT ?? '3000';
 const ENV: string = parameters.environment().APP_ENV ?? 'dev';
 const LOG_PATH: string = parameters.environment().LOG_PATH ?? './logs';
+
+const MD5_SALT: string = parameters.environment().MD5_SALT ?? '';
+const APP_NAME: string = parameters.environment().APP_NAME ?? '';
+const APP_VERSION: string = parameters.environment().APP_VERSION ?? '';
 
 const TYPEORM_TYPE: string = parameters.environment().TYPEORM_TYPE ?? 'sqlite';
 const TYPEORM_DATABASE: string = parameters.environment().TYPEORM_DATABASE ?? './database.sqlite';
@@ -95,6 +99,8 @@ const config = {
 
     app: {
         env: ENV,
+        name: APP_NAME,
+        version: APP_VERSION,
         morgan: {
             format: ENV === 'dev' ? 'dev' : 'common',
             stream: () => {
@@ -112,8 +118,8 @@ const config = {
             database: TYPEORM_DATABASE,
             synchronize: ENV === 'dev' ? true : false,
             logging: ENV === 'dev' ? TYPEORM_LOGGING : false,
-            entities: [path.join(__dirname, './core/configurations/entities/*.ts')],
-            migrations: [path.join(__dirname, './core/configurations/migrations/*.ts')]
+            entities: [path.join(__dirname, './configurations/entities/*.`{ts,js}`')],
+            migrations: [path.join(__dirname, './configurations/migrations/*.{ts,js}')]
         }
     },
 
@@ -144,6 +150,10 @@ const config = {
             secret: EMAIL_SENDGRID_SECRET,
             from: EMAIL_SENDGRID_FROM
         }
+    },
+
+    hasher: {
+        salt: MD5_SALT
     }
 }
 

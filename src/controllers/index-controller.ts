@@ -1,20 +1,19 @@
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import IOptions from '../core/configurations/interfaces/ioptions';
-import Options from '../core/configurations/options';
-
-const _parameters: IOptions = Options.instance();
+import config from '../config';
 
 const controller = {
     index: async (request: Request, response: Response, next: NextFunction) => {
-        response.status(StatusCodes.OK)
-            .send({
-                route: request.route.path,
-                name: _parameters.environment().APP_NAME,
-                version: _parameters.environment().APP_VERSION
-            });
-
-        next();
+        try {
+            return response.status(StatusCodes.OK)
+                .send({
+                    route: request.route.path,
+                    name: config.app.name,
+                    version: config.app.version
+                });
+        } catch (error) {
+            next(error);
+        }
     }
 };
 
