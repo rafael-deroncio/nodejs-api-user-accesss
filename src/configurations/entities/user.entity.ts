@@ -1,8 +1,8 @@
 import { Expose } from "class-transformer";
 import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import AddressEntity from "./address-entity";
-import TelephoneEntity from "./telephone-entity";
-import AccountEntity from "./account-entity";
+import AddressEntity from "./address.entity";
+import TelephoneEntity from "./telephone.entity";
+import AccountEntity from "./account.entity";
 
 @Entity({ name: 'users' })
 class UserEntity {

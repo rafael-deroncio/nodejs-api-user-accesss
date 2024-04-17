@@ -1,9 +1,9 @@
 import { DataSource, DataSourceOptions } from "typeorm";
 import config from "../config";
-import RoleEtity from "./entities/role-entity";
+import RoleEtity from "./entities/role.entity";
 import RoleType from "./enums/role.type.enum";
-import UserEntity from "./entities/user-entity";
-import AccountEntity from "./entities/account-entity";
+import UserEntity from "./entities/user.entity";
+import AccountEntity from "./entities/account.entity";
 import DatabaseException from "../exceptions/database.exception";
 
 export const options = { ...config.database.options } as DataSourceOptions

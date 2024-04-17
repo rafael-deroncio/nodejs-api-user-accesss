@@ -1,9 +1,9 @@
 import { Expose } from "class-transformer";
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import UserEntity from "./user-entity";
+import UserEntity from "./user.entity";
 
-@Entity({ name: 'addresses' })
-class AddressEntity {
+@Entity({ name: 'telephones' })
+class TelephoneEntity {
 
     @Expose()
     @PrimaryGeneratedColumn('increment')
@@ -11,31 +11,7 @@ class AddressEntity {
 
     @Expose()
     @Column({ type: 'varchar' })
-    street!: string;
-
-    @Expose()
-    @Column({ type: 'varchar' })
     number!: string;
-
-    @Expose()
-    @Column({ type: 'varchar' })
-    district!: string;
-
-    @Expose()
-    @Column({ type: 'varchar' })
-    city!: string;
-
-    @Expose()
-    @Column({ type: 'varchar' })
-    state!: string;
-
-    @Expose()
-    @Column({ type: 'varchar' })
-    country!: string;
-
-    @Expose()
-    @Column({ type: 'varchar' })
-    zipcode!: string;
 
     @Expose()
     @Column({ type: 'varchar' })
@@ -50,16 +26,19 @@ class AddressEntity {
     active!: boolean;
 
     @Expose()
+    @Column()
     @CreateDateColumn()
     created!: Date;
 
     @Expose()
+    @Column()
     @UpdateDateColumn()
     updated!: Date;
 
-    @ManyToOne(() => UserEntity, user => user.addresses)
+    @Expose()
+    @ManyToOne(() => UserEntity, user => user.telephones)
     @JoinColumn({ name: 'user' })
     user!: UserEntity;
 }
 
-export default AddressEntity;
+export default TelephoneEntity;

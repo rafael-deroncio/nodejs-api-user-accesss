@@ -1,7 +1,7 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Expose } from "class-transformer";
-import UserEntity from "./user-entity";
-import RoleEntity from "./role-entity";
+import UserEntity from "./user.entity";
+import RoleEntity from "./role.entity";
 
 @Entity({ name: 'accounts' })
 class AccountEntity {
@@ -27,12 +27,10 @@ class AccountEntity {
     active!: boolean;
 
     @Expose()
-    @Column()
     @CreateDateColumn()
     created!: Date;
 
     @Expose()
-    @Column()
     @UpdateDateColumn()
     updated!: Date;
 

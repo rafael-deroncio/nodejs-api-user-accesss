@@ -1,6 +1,6 @@
 import { Expose } from "class-transformer";
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import AccountEntity from "./account-entity";
+import AccountEntity from "./account.entity";
 
 @Entity({ name: 'roles' })
 class RoleEntity {
@@ -13,12 +13,10 @@ class RoleEntity {
     role!: string;
 
     @Expose()
-    @Column()
     @CreateDateColumn()
     created!: Date;
 
     @Expose()
-    @Column()
     @UpdateDateColumn()
     updated!: Date;
 
