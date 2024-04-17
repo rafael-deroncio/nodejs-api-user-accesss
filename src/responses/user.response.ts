@@ -1,8 +1,9 @@
 import { Expose } from "class-transformer";
 import TelephoneResponse from "./telephone.response";
 import AddressResponse from "./address.response";
+import UserDTO from "../configurations/dtos/user.dto";
 
-class UserResponse {
+class UserResponse implements Omit<UserDTO, 'birthDate' | 'addresses' | 'telephones' | 'id' | 'created' | 'updated'> {
     @Expose()
     name!: string;
 

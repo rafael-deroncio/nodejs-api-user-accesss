@@ -1,5 +1,4 @@
 import { Expose } from "class-transformer";
-import AccountDTO from "./account.dto";
 import AddressDTO from "./address.dto";
 import TelephoneDTO from "./telephone.dto";
 
@@ -25,9 +24,6 @@ class UserDTO {
 
     @Expose()
     updated!: Date;
-
-    @Expose()
-    account!: AccountDTO;
 
     @Expose()
     addresses!: Array<AddressDTO>;

@@ -1,15 +1,7 @@
-import { Expose } from "class-transformer";
-import UserRequest from "./user.request";
+import AccountRequest from "./account.request";
 
-class SigninRequest {
-    
-    @Expose()
-    email!: string;
+class SigninRequest extends AccountRequest {
 
-    @Expose()
-    password!: string;
-
-    user!: UserRequest;
 }
 
 export default SigninRequest;

@@ -1,9 +1,10 @@
 import { Expose } from "class-transformer";
 import AddressRequest from "./address.rerquest";
 import TelephoneRequest from "./telephone.request";
+import UserDTO from "../configurations/dtos/user.dto";
 
-class UserRequest {
-    
+class UserRequest implements Omit<UserDTO, 'name' | 'addresses' | 'telephones' | 'id' | 'created' | 'updated'> {
+
     @Expose()
     firstName!: string;
 

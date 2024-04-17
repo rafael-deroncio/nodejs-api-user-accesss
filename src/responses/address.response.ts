@@ -1,7 +1,8 @@
 import { Expose } from "class-transformer";
+import AddressDTO from "../configurations/dtos/address.dto";
 
-class AddressResponse {
-    
+class AddressResponse implements Omit<AddressDTO, 'active' | 'id' | 'created' | 'updated'> {
+
     @Expose()
     street!: string;
 

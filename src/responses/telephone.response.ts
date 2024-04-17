@@ -1,6 +1,7 @@
 import { Expose } from "class-transformer";
+import TelephoneDTO from "../configurations/dtos/telephone.dto";
 
-class TelephoneResponse {
+class TelephoneResponse implements Omit<TelephoneDTO, 'active' | 'id' | 'created' | 'updated'> {
     @Expose()
     number!: string;
     
