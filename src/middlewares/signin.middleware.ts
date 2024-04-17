@@ -18,8 +18,6 @@ const signin = (request: Request, response: Response, next: NextFunction) => {
         return response.status(StatusCodes.BAD_REQUEST)
             .send({ success: false, errors: validator.errors });
 
-    console.log(validator.isValid, validator);
-
     const signin = mapper.map(request.body, SigninRequest);
     signin.password = md5(request.body + config.hasher.salt);
 
