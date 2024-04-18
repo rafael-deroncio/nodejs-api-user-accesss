@@ -119,7 +119,8 @@ const config = {
             synchronize: ENV === 'dev' ? true : false,
             logging: ENV === 'dev' ? TYPEORM_LOGGING : false,
             entities: [path.join(__dirname, './configurations/entities/*.{ts,js}')],
-            migrations: [path.join(__dirname, './configurations/migrations/*.{ts,js}')]
+            migrations: [path.join(__dirname, './configurations/migrations/*.{ts,js}')],
+            autoCommit: ENV !== 'dev'
         }
     },
 
