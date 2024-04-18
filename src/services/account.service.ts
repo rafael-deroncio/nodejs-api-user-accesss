@@ -22,13 +22,24 @@ import SigninResponse from "../responses/signin.response";
 import IAccountService from "./interfaces/iaccount.service";
 import ITokenService from "./interfaces/itoken.service";
 import TokenService from "./token.service";
-import DatabaseException from "../exceptions/database.exception";
+import IEmailService from "./interfaces/iemail.service";
+import EmailService from "./emailservice";
+import EmailRequest from "../requests/email.request";
+import TokenResponse from "../responses/token-response";
+import TokenRequest from "../requests/token.request";
+import TokenType from "../configurations/enums/token.type.enum";
+import config from "../config";
+import BaseException from "../exceptions/base.exception";
+import AddressResponse from "../responses/address.response";
+import TelephoneResponse from "../responses/telephone.response";
+import TokenPayloadRequest from "../requests/token.payload.request";
 
 class AccountService implements IAccountService {
 
     //#region dependencies
     private _mapper: IMapper;
-    private _service: ITokenService;
+    private _token: ITokenService;
+    private _email: IEmailService;
     private _repository: IAccountRepository
     //#endregion
 
@@ -37,7 +48,8 @@ class AccountService implements IAccountService {
 
     protected constructor() {
         this._mapper = Mapper.instance();
-        this._service = TokenService.instance();
+        this._token = TokenService.instance();
+        this._email = EmailService.instance();
         this._repository = AccountRepository.instance();
     }
 
@@ -88,8 +100,37 @@ class AccountService implements IAccountService {
             // save account
             const model: AccountModel = await this._repository.create(argument);
             const account = this._mapper.map(model, AccountResponse);
-            account.user.address = model.user.addresses.find(address => address.principal)!
-            account.user.telephone = model.user.telephones.find(telephone => telephone.principal)!
+
+            account.user.address = this._mapper.map(
+                model.user.addresses.find(address => address.principal)!,
+                AddressResponse);
+
+            account.user.telephone = this._mapper.map(
+                model.user.telephones.find(telephone => telephone.principal)!,
+                TelephoneResponse);
+
+            //token
+            const tokenReques: TokenRequest = {
+                type: TokenType.Confirmation,
+                payload: {
+                    username: model.username,
+                    email: model.email,
+                    role: model.role.id as RoleType
+                }
+            }
+            const tokenResponse: TokenResponse = await this._token.generate(tokenReques);
+
+            //url
+            const url: string =
+                `http://${config.server.host}:${config.server.port}/account/confirm?token=${tokenResponse.value}`;
+
+            // email
+            const message: EmailRequest = {
+                to: model.email,
+                subject: 'Nodestore | Confirm account',
+                bodyParms: [model.user.name, url]
+            };
+            await this._email.send('account-confirmation', message);
 
             return {
                 messages: ['Account created successfully!', `Activation email sent to ${model.email}`],
@@ -97,27 +138,64 @@ class AccountService implements IAccountService {
             }
         } catch (error) {
             console.log(error);
-            if (error instanceof DatabaseException)
+            if (error instanceof BaseException)
                 throw error;
+
             throw new AccountExeption(
                 'Error saving account',
-                ['We were unable to create a new account at this time!', ' Please try again later!'],
+                ['We were unable to create a new account at this time!', 'Please try again later!'],
                 StatusCodes.INTERNAL_SERVER_ERROR);
         }
     }
 
     public async confirm(token: string): Promise<ConfirmAccountResponse> {
+        try {
+            if (!await this._token.validate(token))
+                if (!token?.toString()) throw new TokenExeption(
+                    'Invalid token',
+                    ['Token provided is not valid.'],
+                    StatusCodes.BAD_REQUEST);
 
-        if (!await this._service.validate(token))
-            if (!token?.toString()) throw new TokenExeption(
-                'Invalid token',
-                ['Token provided is not valid.']);
+            const payload: TokenPayloadRequest = this._mapper.map(await this._token.decode(token), TokenPayloadRequest);
 
-        const payload = await this._service.decode(token);
+            const model: AccountModel = await this._repository.get(payload.username);
 
-        console.log(payload);
+            if (!model)
+                throw new AccountExeption(
+                    'Account not found!',
+                    ['No account was found for the data entered.'],
+                    StatusCodes.NOT_FOUND);
 
-        throw new Error("Method not implemented.");
+            model.active = true;
+            await this._repository.update(
+                payload.username, this._mapper.map(model, AccountArgument));
+
+            // email
+            const message: EmailRequest = {
+                to: model.email,
+                subject: 'Nodestore | Account activated',
+                bodyParms: [model.user.name, model.username]
+            };
+            await this._email.send('account-confirmation-success', message);
+
+            return {
+                active: true,
+                messages: [
+                    'Account activated.',
+                    'Email confirming activation sent.',
+                    'Login enabled.'
+                ]
+            }
+        } catch (error) {
+            console.log(error);
+            if (error instanceof BaseException)
+                throw error;
+
+            throw new AccountExeption(
+                'Error activating account.',
+                ['Unable to activate account at this time!', 'Please try again later!'],
+                StatusCodes.INTERNAL_SERVER_ERROR);
+        }
     }
 
     public async login(request: LoginRequest): Promise<LoginResponse> {

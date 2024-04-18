@@ -7,6 +7,7 @@ import BaseRepository from "./base.repository";
 import IAccountRepository from "./interfaces/iaccount.repositroy";
 import PaginationArgument from "../arguments/pagination.argument";
 import DatabaseException from "../exceptions/database.exception";
+import BaseException from "../exceptions/base.exception";
 
 class AccountRepository extends BaseRepository<AccountEntity> implements IAccountRepository {
 
@@ -70,13 +71,21 @@ class AccountRepository extends BaseRepository<AccountEntity> implements IAccoun
         }
     }
 
-    update(username: string, argument: AccountArgument): Promise<AccountModel> {
+    public async update(username: string, argument: AccountArgument): Promise<AccountModel> {
         try {
-            username; argument
-            throw new Error("Method not implemented.");
+            this.start();
+            const result = await this.connection()
+                .update({ username: username }, { ...argument });
+            if (result.affected === 0)
+                throw new DatabaseException();
+            this.commit();
+            return this.get(username);
         } catch (error) {
+            this.rollback();
             console.log(error);
-            throw new DatabaseException()
+            if (error instanceof BaseException)
+                throw error;
+            throw new DatabaseException();
         }
     }
 

@@ -14,7 +14,7 @@ class AccountResponse implements Omit<AccountDTO, 'password' | 'user' | 'role' |
     active!: boolean;
 
     @Expose()
-    @Transform(({ obj }) => obj.role.role)
+    @Transform(({ obj }) => obj.role.role ?? '')
     role!: string;
 
     @Expose()
