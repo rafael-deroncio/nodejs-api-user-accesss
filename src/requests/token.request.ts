@@ -1,5 +1,6 @@
 import { Expose } from "class-transformer";
 import TokenType from "../configurations/enums/token.type.enum";
+import TokenPayloadRequest from "./token.payload.request";
 
 class TokenRequest {
 
@@ -7,7 +8,7 @@ class TokenRequest {
     type!: TokenType;
 
     @Expose()
-    payload!: object;
+    payload!: TokenPayloadRequest;
 }
 
 export default TokenRequest;
