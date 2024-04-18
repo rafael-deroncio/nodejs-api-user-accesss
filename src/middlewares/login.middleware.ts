@@ -19,7 +19,7 @@ const login = (request: Request, response: Response, next: NextFunction) => {
             .send({ success: false, errors: validator.errors });
 
     const login = mapper.map(request.body, LoginRequest);
-    login.password = md5(request.body + config.hasher.salt);
+    login.password = md5(login.password + config.hasher.salt);
 
     request.body = login;
 

@@ -23,7 +23,7 @@ const signin = (request: Request, response: Response, next: NextFunction) => {
     const signin = mapper.map(request.body, SigninRequest);
     signin.user.addresses = mapper.maps(request.body?.user.addresses, AddressRequest);
     signin.user.telephones = mapper.maps(request.body?.user.telephones, TelephoneRequest);
-    signin.password = md5(request.body + config.hasher.salt);
+    signin.password = md5(signin.password + config.hasher.salt);
 
     request.body = signin;
 

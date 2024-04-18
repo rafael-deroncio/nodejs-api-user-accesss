@@ -110,7 +110,7 @@ class AccountService implements IAccountService {
                 TelephoneResponse);
 
             //token
-            const tokenReques: TokenRequest = {
+            const tokenRequest: TokenRequest = {
                 type: TokenType.Confirmation,
                 payload: {
                     username: model.username,
@@ -118,7 +118,7 @@ class AccountService implements IAccountService {
                     role: model.role.id as RoleType
                 }
             }
-            const tokenResponse: TokenResponse = await this._token.generate(tokenReques);
+            const tokenResponse: TokenResponse = await this._token.generate(tokenRequest);
 
             //url
             const url: string =
@@ -199,8 +199,55 @@ class AccountService implements IAccountService {
     }
 
     public async login(request: LoginRequest): Promise<LoginResponse> {
-        request
-        throw new Error("Method not implemented.");
+        try {
+
+            console.log(request);
+            
+
+            const model: AccountModel = await this._repository.get(request.username);
+
+            if (!model)
+                throw new AccountExeption(
+                    'Account not found!',
+                    ['No account was found for the data entered.'],
+                    StatusCodes.UNAUTHORIZED);
+                    
+            if (!model.active)
+                throw new AccountExeption(
+                    'Inactive account!',
+                    ['Pending account confirmation.'],
+                    StatusCodes.UNAUTHORIZED);
+
+                    console.log(model.password, request.password);
+                    
+
+            if (model.password !== request.password)
+                throw new AccountExeption(
+                    'Invalid data!',
+                    ['Review the input information and try again.'],
+                    StatusCodes.UNAUTHORIZED);
+
+            //token
+            const tokenRequest: TokenRequest = {
+                type: TokenType.Access,
+                payload: {
+                    username: model.username,
+                    email: model.email,
+                    role: model.role.id as RoleType
+                }
+            }
+
+            return { token: await this._token.generate(tokenRequest) }
+        } catch (error) {
+            console.log(error);
+            if (error instanceof BaseException)
+                throw error;
+
+            throw new AccountExeption(
+                'Error logging into account.',
+                ['Unable to log into account at this time!', 'Try again later!'],
+                StatusCodes.INTERNAL_SERVER_ERROR);
+        }
     }
 }
 

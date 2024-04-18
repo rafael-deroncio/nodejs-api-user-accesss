@@ -36,7 +36,7 @@ class TokenService implements ITokenService {
     public async generate(request: TokenRequest): Promise<TokenResponse> {
         const response: TokenResponse = new TokenResponse();
 
-        response.value = request.type !== TokenType.Confirmation ? 'Bearer ' : '' + this.sign(request.payload);
+        response.value = (request.type !== TokenType.Confirmation ? 'Bearer ' : '') + this.sign(request.payload);
         response.expires = this.expires(response.value);
         response.type = this.type(request.type);
 
@@ -56,7 +56,7 @@ class TokenService implements ITokenService {
     //#region private
     private sign = (payload: object): string => jwt.sign(payload, this._secret, { expiresIn: this._expires });
 
-    private expires = (token: string): number => (jwt.decode(token, { complete: true }) as JwtPayload).payload.exp;
+    private expires = (token: string): number => (jwt.decode(token.replace('Bearer ', ''), { complete: true }) as JwtPayload).payload.exp;
 
     private type = (type: TokenType): string => TokenType[type]
     //#endregion
